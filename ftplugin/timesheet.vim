@@ -20,7 +20,13 @@ function! s:NewTimesheetEntry(followed_by, ...)
 	endif
 endfunction
 
+nnoremap <Plug>TimesheetStart    :call <SID>NewTimesheetEntry('  ')<CR>
+nnoremap <Plug>TimesheetStop     :call <SID>NewTimesheetEntry('.', 0)<CR>
+nnoremap <Plug>TimesheetContinue :call <SID>NewTimesheetEntry('^', 0)<CR>
+
 " Some mappings to insert a timestamped new line.
-nnoremap <buffer> <LocalLeader>n :call <SID>NewTimesheetEntry('  ')<CR>
-nnoremap <buffer> <LocalLeader>s :call <SID>NewTimesheetEntry('.', 0)<CR>
-nnoremap <buffer> <LocalLeader>c :call <SID>NewTimesheetEntry('^', 0)<CR>
+if !hasmapto('<Plug>TimesheetStart')
+	nmap <buffer> <LocalLeader>n <Plug>TimesheetStart
+	nmap <buffer> <LocalLeader>s <Plug>TimesheetStop
+	nmap <buffer> <LocalLeader>c <Plug>TimesheetContinue
+endif
