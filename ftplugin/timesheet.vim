@@ -2,15 +2,16 @@
 function! s:NewTimesheetEntry()
 	" Go to the end of the file, because that's the only place where
 	" inserting a new timestamped item makes sense.
-	normal G
+	call cursor(line('$'), 0)
 	" Look backwards for a date.
 	let l:dateline = search('\v^\d{4}-\d{2}-\d{2}:$', 'bcnw')
 	" If there's none or it's not the current day, create one.
 	if !l:dateline || getline(l:dateline) != strftime("%Y-%m-%d:")
-		execute "normal o\n" . strftime("%Y-%m-%d:")
+		call append(line('$'), '')
+		call append(line('$'), strftime("%Y-%m-%d:"))
 	endif
 	" Insert the timestamp and start insert mode.
-	execute "normal o" . strftime("%H%M")
+	call append(line('$'), strftime("%H%M"))
 endfunction
 
 nnoremap <Plug>(Timesheet) :call <SID>NewTimesheetEntry()<CR>
