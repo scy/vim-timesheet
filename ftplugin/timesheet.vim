@@ -1,9 +1,5 @@
-" Create a new entry.
-" followed_by:        string to append after the timestamp
-" optional parameter: set to false (e.g. 0) to _not_ go into insert mode
-"                     afterwards
-function! s:NewTimesheetEntry(followed_by, ...)
-	let l:insertmode = get(a:, 1, 1)
+" Create a new timestamp entry at the end of the file.
+function! s:NewTimesheetEntry()
 	" Go to the end of the file, because that's the only place where
 	" inserting a new timestamped item makes sense.
 	normal G
@@ -14,19 +10,14 @@ function! s:NewTimesheetEntry(followed_by, ...)
 		execute "normal o\n" . strftime("%Y-%m-%d:")
 	endif
 	" Insert the timestamp and start insert mode.
-	execute "normal o" . strftime("%H%M") . a:followed_by
-	if l:insertmode
-		startinsert!
-	endif
+	execute "normal o" . strftime("%H%M")
 endfunction
 
-nnoremap <Plug>TimesheetStart    :call <SID>NewTimesheetEntry('  ')<CR>
-nnoremap <Plug>TimesheetStop     :call <SID>NewTimesheetEntry('.', 0)<CR>
-nnoremap <Plug>TimesheetContinue :call <SID>NewTimesheetEntry('^', 0)<CR>
+nnoremap <Plug>(Timesheet) :call <SID>NewTimesheetEntry()<CR>
 
 " Some mappings to insert a timestamped new line.
-if !hasmapto('<Plug>TimesheetStart')
-	nmap <buffer> <LocalLeader>n <Plug>TimesheetStart
-	nmap <buffer> <LocalLeader>s <Plug>TimesheetStop
-	nmap <buffer> <LocalLeader>c <Plug>TimesheetContinue
+if !hasmapto('<Plug>(Timesheet)')
+	nmap <buffer> <LocalLeader>n <Plug>(Timesheet)GA<Space><Space>
+	nmap <buffer> <LocalLeader>s <Plug>(Timesheet)GA.<Esc>
+	nmap <buffer> <LocalLeader>c <Plug>(Timesheet)GA^<Esc>
 endif
