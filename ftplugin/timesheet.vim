@@ -19,6 +19,6 @@ nnoremap <Plug>(Timesheet) :call <SID>NewTimesheetEntry()<CR>
 " Some mappings to insert a timestamped new line.
 if !hasmapto('<Plug>(Timesheet)')
 	nmap <buffer> <LocalLeader>n <Plug>(Timesheet)GA<Space><Space>
-	nmap <buffer> <LocalLeader>s <Plug>(Timesheet)GA.<Esc>
-	nmap <buffer> <LocalLeader>c <Plug>(Timesheet)GA^<Esc>
+	nmap <buffer> <LocalLeader>s <Plug>(Timesheet)GA.<C-C>
+	nmap <buffer> <LocalLeader>c <Plug>(Timesheet)GA^<C-C>
 endif
